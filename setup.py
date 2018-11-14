@@ -19,7 +19,7 @@ with open('README.rst', 'r') as r_file:
 
 setuptools.setup(
     name='pasted-client',
-    version='0.0.4',
+    version='0.0.5',
     description='Pasted client. Paste files or STDIN to a raw object.',
     long_description=README,
     author='Kevin Carter',

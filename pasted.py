@@ -44,7 +44,7 @@ class UrlNotFound(Error):
     pass
 
 
-def retry(ExceptionToCheck, tries=5, delay=1, backoff=2):
+def retry(ExceptionToCheck, tries=5, delay=3, backoff=2):
     """Retry calling the decorated function using an exponential backoff.
 
     :param ExceptionToCheck: the exception to check. may be a tuple of
@@ -100,12 +100,14 @@ class Client(object):
     def _validate_paste(self, url):
         r = requests.get(url)
         if r.status_code != 200:
-            print('Its likely the server is busy or the object store backend'
-                  ' is not responding as quick as we would like. Rest assured'
-                  ' your pasted content has been written given the POST'
-                  ' returned a URL. Please wait a couple of minutes for the'
-                  ' content to be rendered by the site.')
-            print('URL: {}'.format(url))
+            LOG.info('URL Validation failed, retrying.')
+            LOG.debug('Its likely the server is busy or the object store'
+                      ' backend is not responding as quick as we would like.'
+                      ' Rest assured your pasted content has been written'
+                      ' given the POST returned a URL. Please wait a couple'
+                      ' of minutes for the content to be rendered by the'
+                      ' site.')
+            LOG.debug('URL: {}'.format(url))
             raise UrlNotFound(url)
         else:
             return url
