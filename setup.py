@@ -29,7 +29,7 @@ setuptools.setup(
         'requests'
     ],
     packages = [
-        'pasted'
+        'pasted_client'
     ],
     classifiers = [
         'Development Status :: 5 - Production/Stable',
