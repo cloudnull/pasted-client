@@ -18,21 +18,32 @@ with open('README.rst', 'r') as r_file:
 
 
 setuptools.setup(
-    name='pasted-client',
-    version='0.0.5',
-    description='Pasted client. Paste files or STDIN to a raw object.',
-    long_description=README,
-    author='Kevin Carter',
-    author_email='kevin@cloudnull.com',
-    url='http://github.com/cloudnull/pasted-client',
-    scripts=['pasted.py'],
-    install_requires=['requests'],
-    py_modules=['pasteraw'],
-    entry_points={'console_scripts': ['pasted = pasted:cli']},
-    classifiers=[
-        'Development Status :: 5 - Production/Stable',
-        'Environment :: Console',
-        'Intended Audience :: Developers',
-        'Topic :: Utilities',
+    name = 'pasted-client',
+    version = '0.1.0',
+    description = 'Pasted client. Paste files or STDIN to a raw object.',
+    long_description = README,
+    author = 'Kevin Carter',
+    author_email = 'kevin@cloudnull.com',
+    url = 'http://github.com/cloudnull/pasted-client',
+    install_requires = [
+        'requests'
     ],
+    packages = [
+        'pasted'
+    ],
+    classifiers = [
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Information Technology',
+        'Intended Audience :: System Administrators',
+        'Intended Audience :: Developers',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python :: 3.6',
+        'Topic :: Utilities',
+        'Topic :: Software Development :: Libraries :: Python Modules'
+      ],
+    entry_points = {
+        "console_scripts": [
+            "pasted = pasted_client.pasted:cli"
+        ]
+    }
 )
