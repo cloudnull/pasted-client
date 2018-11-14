@@ -13,17 +13,22 @@
 import setuptools
 
 
+with open('README.rst', 'r') as r_file:
+    README = r_file.read()
+
+
 setuptools.setup(
-    name='pasteraw',
-    version='1.1.0',
-    description='Pipe stdin to a raw pastebin',
-    author='Dolph Mathews',
-    author_email='dolph.mathews@gmail.com',
-    url='http://github.com/dolph/pasteraw-client',
-    scripts=['pasteraw.py'],
+    name='pasted-client',
+    version='0.0.4',
+    description='Pasted client. Paste files or STDIN to a raw object.',
+    long_description=README,
+    author='Kevin Carter',
+    author_email='kevin@cloudnull.com',
+    url='http://github.com/cloudnull/pasted-client',
+    scripts=['pasted.py'],
     install_requires=['requests'],
     py_modules=['pasteraw'],
-    entry_points={'console_scripts': ['pasteraw = pasteraw:cli']},
+    entry_points={'console_scripts': ['pasted = pasted:cli']},
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
