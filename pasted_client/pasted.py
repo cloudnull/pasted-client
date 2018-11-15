@@ -44,6 +44,10 @@ class UrlNotFound(Error):
     pass
 
 
+class NoFileOrStdinFound(Error):
+    pass
+
+
 def retry(ExceptionToCheck, tries=5, delay=3, backoff=2):
     """Retry calling the decorated function using an exponential backoff.
 
@@ -94,7 +98,7 @@ class Client(object):
     def __init__(self, endpoint=None):
         """Initialize a pasteraw client for the given endpoint (optional)."""
         self.endpoint = endpoint or ENDPOINT
-        LOG.debug('Endpoint: %s', ENDPOINT)
+        LOG.debug('Endpoint: {}'.format(ENDPOINT))
 
     @retry(UrlNotFound)
     def _validate_paste(self, url):
@@ -107,9 +111,10 @@ class Client(object):
                       ' given the POST returned a URL. Please wait a couple'
                       ' of minutes for the content to be rendered by the'
                       ' site.')
-            LOG.debug('URL: {}'.format(url))
+            LOG.debug('Return-URL: {}'.format(url))
             raise UrlNotFound(url)
         else:
+            LOG.info('Validating-URL: {}'.format(url))
             return url
 
     def create_paste(self, content):
@@ -120,7 +125,7 @@ class Client(object):
 
         """
         content_length = len(content)
-        LOG.debug('Content-Length: %d', content_length)
+        LOG.debug('Content-Length: {}'.format(content_length))
 
         r = requests.post(
             self.endpoint,
@@ -140,19 +145,20 @@ class Client(object):
 
 
 def main(args):
-    LOG.debug('File-Count: %d', len(args.files))
-
+    LOG.debug('File-Count: {}'.format(len(args.files)))
     client = Client(args.endpoint)
     if args.files:
         for arg_file in args.files:
             if os.path.isfile(arg_file):
-                LOG.debug('Content-Length: %s', arg_file)
+                LOG.debug('Reading-File: {}'.format(arg_file))
                 with open(arg_file) as f:
-                    url = client.create_paste(f.read())
-                    print(url)
+                    print(client.create_paste(f.read()))
     else:
-        url = client.create_paste(''.join(sys.stdin.readlines()))
-        print(url)
+        stdin = sys.stdin.readlines()
+        if stdin:
+            print(client.create_paste(''.join(stdin)))
+        else:
+            LOG.fatal('No standard in or file found.')
 
 
 def cli():
